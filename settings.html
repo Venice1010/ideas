@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Settings</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .settings-header h1 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .profile-section {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+
+        .date-input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #777;
+            font-style: italic;
+            width: 100%;
+            background-color: white;
+        }
+
+        .date-input[type="text"] {
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .color-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .color-option.selected {
+            border-color: #333;
+        }
+        
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .save-btn:hover {
+            background-color: #3a5a8f;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1>Account Settings</h1>
+        </div>
+        
+        <div class="profile-section">
+            <div>
+                <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-picture" id="profile-picture">
+                <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                <button onclick="document.getElementById('profile-upload').click()" style="margin-top: 10px;">Change Photo</button>
+            </div>
+            
+            <div class="profile-info">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" value="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" value="john.doe@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="member-since">Member since</label>
+                    <input type="date" id="member-since" value="2020-01-01" class="date-input">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="ministry">Ministry</label>
+            <select id="ministry">
+                <option value="worship">Worship Ministry</option>
+                <option value="youth" selected>Youth Ministry</option>
+                <option value="outreach">Ushering Ministry</option>
+                <option value="creative">Creative Ministry</option>
+                <option value="prayer">Prayer Ministry</option>
+                <option value="media">Multimedia Ministry</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="church">Church Name</label>
+            <input type="text" id="church" value="Grace Community Church">
+        </div>
+        
+        <div class="form-group">
+            <label>Preferred Background Color</label>
+            <div class="color-options">
+                <div class="color-option selected" style="background-color: #4a6fa5;" data-color="#4a6fa5"></div>
+                <div class="color-option" style="background-color: #5a8f6f;" data-color="#5a8f6f"></div>
+                <div class="color-option" style="background-color: #8f6f5a;" data-color="#8f6f5a"></div>
+                <div class="color-option" style="background-color: #6f5a8f;" data-color="#6f5a8f"></div>
+                <div class="color-option" style="background-color: #8f5a5a;" data-color="#8f5a5a"></div>
+            </div>
+            <input type="hidden" id="selected-color" value="#4a6fa5">
+        </div>
+        
+        <button class="save-btn">Save Changes</button>
+    </div>
+
+    <script>
+        // Color selection functionality
+        const colorOptions = document.querySelectorAll('.color-option');
+        const selectedColorInput = document.getElementById('selected-color');
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                
+                // Update hidden input value
+                selectedColorInput.value = option.dataset.color;
+            });
+        });
+        
+        // Profile picture upload preview
+        document.getElementById('profile-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('profile-picture').src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Enhanced date handling
+        const memberSinceInput = document.getElementById('member-since');
+        
+        // Format date to readable text when not focused
+        function formatDateDisplay() {
+            if (memberSinceInput.value) {
+                const options = { year: 'numeric', month: 'long' };
+                const date = new Date(memberSinceInput.value);
+                if (!isNaN(date)) {
+                    memberSinceInput.type = 'text';
+                    memberSinceInput.value = date.toLocaleDateString('en-US', options);
+                }
+            }
+        }
+        
+        // Convert to date input when focused
+        function prepareDateEdit() {
+            memberSinceInput.type = 'date';
+            // If current value is in text format, convert back to date format
+            if (memberSinceInput.value && !memberSinceInput.value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                const date = new Date(memberSinceInput.value);
+                if (!isNaN(date)) {
+                    const year = date.getFullYear();
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const day = date.getDate().toString().padStart(2, '0');
+                    memberSinceInput.value = `${year}-${month}-${day}`;
+                }
+            }
+        }
+        
+        // Event listeners
+        memberSinceInput.addEventListener('focus', prepareDateEdit);
+        memberSinceInput.addEventListener('blur', formatDateDisplay);
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            formatDateDisplay();
+        });
+    </script>
+</body>
+</html>

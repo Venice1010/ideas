@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAITHer: Growth & Fellowship - Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #ffc4c7;
+            display: flex;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .main-container {
+            display: flex;
+            height: 500px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 75px;
+            margin-left: 240px;
+            gap: 2rem;
+        }
+
+        .signup-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 50%;
+            max-width: 500px;
+        }
+
+        .verse-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            height: 400px;
+            width: 50%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 40px;
+
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .verse-title {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .verse-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .verse-reference {
+            text-align: right;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #735240;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .signup-container, .verse-container {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="signup-container">
+            <h1>FAITHer: Growth & Fellowship</h1>
+            <form action="dashboard.html" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                </div>
+                <button type="submit">Create Account</button>
+            </form>
+        </div>
+
+        <div class="verse-container">
+            <div class="verse-title">Daily Verse</div>
+            <div class="verse-text" id="daily-verse">For I know the plans I have for you, declares the LORD, plans for welfare and not for evil, to give you a future and a hope.</div>
+            <div class="verse-reference" id="verse-reference">Jeremiah 29:11</div>
+        </div>
+    </div>
+
+    <script>
+        // Array of Bible verses
+        const bibleVerses = [
+            {
+                text: "For I know the plans I have for you, declares the LORD, plans for welfare and not for evil, to give you a future and a hope.",
+                reference: "Jeremiah 29:11"
+            },
+            {
+                text: "Trust in the LORD with all your heart, and do not lean on your own understanding.",
+                reference: "Proverbs 3:5"
+            },
+            {
+                text: "I can do all things through him who strengthens me.",
+                reference: "Philippians 4:13"
+            },
+            {
+                text: "The LORD is my shepherd; I shall not want.",
+                reference: "Psalm 23:1"
+            },
+            {
+                text: "For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.",
+                reference: "John 3:16"
+            },
+            {
+                text: "Be strong and courageous. Do not fear or be in dread of them, for it is the LORD your God who goes with you. He will not leave you or forsake you.",
+                reference: "Deuteronomy 31:6"
+            },
+            {
+                text: "But they who wait for the LORD shall renew their strength; they shall mount up with wings like eagles; they shall run and not be weary; they shall walk and not faint.",
+                reference: "Isaiah 40:31"
+            }
+        ];
+
+        // Function to get a daily verse (same verse each day, changes at midnight)
+        function getDailyVerse() {
+            // Get today's date as a unique seed
+            const today = new Date();
+            const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+            
+            // Use the seed to select a consistent verse for the day
+            const verseIndex = seed % bibleVerses.length;
+            return bibleVerses[verseIndex];
+        }
+
+        // Display the daily verse
+        function displayDailyVerse() {
+            const verse = getDailyVerse();
+            document.getElementById('daily-verse').textContent = verse.text;
+            document.getElementById('verse-reference').textContent = verse.reference;
+        }
+
+        // Call the function when the page loads
+        displayDailyVerse();
+
+        // Update the verse at midnight
+        function setupMidnightUpdate() {
+            const now = new Date();
+            const midnight = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate() + 1,
+                0, 0, 0
+            );
+            const timeUntilMidnight = midnight - now;
+
+            setTimeout(() => {
+                displayDailyVerse();
+                // Set up the next midnight update
+                setupMidnightUpdate();
+            }, timeUntilMidnight);
+        }
+
+        // Start the midnight update cycle
+        setupMidnightUpdate();
+        
+        <!-- Add this script to create-account.html -->
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const email = document.getElementById('email').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // Store user data in localStorage
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('userUsername', username);
+        localStorage.setItem('userPassword', password);
+        
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+    });
+    </script>
+</body>
+</html> 
